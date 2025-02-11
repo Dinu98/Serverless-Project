@@ -8,7 +8,7 @@ provider:
   #Setting default value to dev while also
   #Permitting this value to be overrided
   stage: ${opt:stage, 'dev'}
-  region: us-west-2
+  region: us-east-1
   memorySize: 512
   timeout: 10
   environment:
@@ -17,9 +17,21 @@ provider:
     #self - yaml file
     #provider.stage - value we are refering to
     TEST_VAR_COMBINED: TEST-${self:provider.stage}
+    #Fetching variables from parameter store
+    DB_USERNAME: ${ssm:/db_username_ps}
+    #Pass "noDecrypt" if you don't want the secure string to be decrypted
+    #DB_PASSWORD: ${ssm(noDecrypt):/db_password_ps}
+    DB_PASSWORD: ${ssm:/db_password_ps}
+    DB_USERNAME_SM: ${self:custom.DB_ADMIN_SM.username}
+    DB_PASSWORD_SM: ${self:custom.DB_ADMIN_SM.password}
 
 plugins:
   - serverless-offline
+
+custom:
+  #Need to be defined here because it is stored as a json
+  #Serverless framework is not capable of parsing json into env variable yet
+  DB_ADMIN_SM: ${ssm:/aws/reference/secretsmanager/db_admin_sm}
 
 functions:
   user:
