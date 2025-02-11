@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports.post = async (event, context) => {
 
   console.log(`event: `, event);
@@ -19,6 +21,7 @@ module.exports.post = async (event, context) => {
       DB_PASSWORD_SM: `${process.env.DB_PASSWORD_SM}`,
       DB_USERNAME_FILE: `${process.env.DB_USERNAME_FILE}`,
       DB_PASSWORD_FILE: `${process.env.DB_PASSWORD_FILE}`,
+      FROM_ENV: `${process.env.FROM_ENV}`,
     })
   }
 
