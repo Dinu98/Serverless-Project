@@ -27,6 +27,16 @@ provider:
     #Loading variables from files
     DB_USERNAME_FILE: ${file(./config/config.${opt:stage, 'dev'}.json):username}
     DB_PASSWORD_FILE: ${file(./config/config.${opt:stage, 'dev'}.json):password}
+    #Serverless core variable
+    SLS_VARIABLE: ${sls:instanceId}
+    #AWS standard variable
+    AWS_VARIABLE: ${aws:accountId}
+    #S3:NameOfBucket/NameOfFile
+    S3_VARIABLE: ${s3:serverless-framework-deployments-us-east-1-1c8015fc-54f4/s3Variable.txt}
+    #Variable from another cloud formation
+    CF_SERVICE_ENDPOINT: ${cf:first-serverless-prod.ServiceEndpoint}
+    #Converting string value to bool
+    STR_TO_BOOL_VARIABLE: ${strToBool(${ssm:/ENABLE_DEBUG})}
 
 plugins:
   - serverless-offline
@@ -43,6 +53,7 @@ functions:
     description: 'Creates a new user'
     environment:
       TEST_VAR_FS: 'TEST_FS'
+      #Loaded from .env using serverless dotenv plugin
       ENV_USING_PLUGIN: ${env:FROM_ENV}-${self:provider.name}
     events:
       - http:
