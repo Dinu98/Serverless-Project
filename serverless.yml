@@ -1,0 +1,24 @@
+service: first-serverless
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: us-west-2
+  memorySize: 512
+  timeout: 10
+
+plugins:
+  - serverless-offline
+
+functions:
+  user:
+    handler: functions/user/user.post
+    description: 'Creates a new user'
+    events:
+      - http:
+          path: user
+          method: post
+          cors: true
