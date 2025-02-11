@@ -1,7 +1,4 @@
 node_modules
 package-lock.json
-first-serverless.zip
-meta.json
-serverless-state.json
-cloudformation-template-update-stack.json
 .env
+.serverless

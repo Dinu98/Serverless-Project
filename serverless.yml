@@ -46,6 +46,7 @@ custom:
   #Need to be defined here because it is stored as a json
   #Serverless framework is not capable of parsing json into env variable yet
   DB_ADMIN_SM: ${ssm:/aws/reference/secretsmanager/db_admin_sm}
+  USERS_TABLE_NAME: usersTable-${opt:stage, self:provider.stage}
 
 functions:
   user:
@@ -60,3 +61,37 @@ functions:
           path: user
           method: post
           cors: true
+
+resources:
+  Resources:
+    UsersTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:custom.USERS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+          - AttributeName: country
+            AttributeType: S
+          - AttributeName: createdAt
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        BillingMode: PROVISIONED
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 10
+
+        GlobalSecondaryIndexes:
+          - IndexName: createdAtIndex
+            KeySchema:
+              - AttributeName: country
+                KeyType: HASH
+              - AttributeName: createdAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 10
