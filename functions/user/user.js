@@ -1,18 +1,20 @@
 require('dotenv').config();
 
-module.exports.post = async (event, context) => {
+const responses = require('../../utils/responses');
+const { createUser } = require('../../utils/dynamoDB');
+const { USERS_TABLE } = process.env;
 
-  console.log(`event: `, event);
-  console.log(`context: `, context);
+module.exports.createUser = async (event, context) => {
+  try {
+    console.log(`event.body: `, event.body);
+    const body = JSON.parse(event.body);
 
-  return {
-    "statusCode": 200,
-    "isBase64Encoded": false,
-    "headers": {
-        "Access-Control-Allow-Origin": '*'
-    },
-    "body": JSON.stringify({
-    })
+    const response = await createUser(body, USERS_TABLE);
+    console.log('response: ', response);
+
+    return { ...responses.success, body: JSON.stringify(response) };
+  } catch (e) {
+    console.log(e);
+    return { ...responses.error, body: JSON.stringify(e) };
   }
-
-}
+};

@@ -12,31 +12,32 @@ provider:
   memorySize: 512
   timeout: 10
   environment:
-    TEST_VAR: TEST
-    #Combine var
-    #self - yaml file
-    #provider.stage - value we are refering to
-    TEST_VAR_COMBINED: TEST-${self:provider.stage}
-    #Fetching variables from parameter store
-    DB_USERNAME: ${ssm:/db_username_ps}
-    #Pass "noDecrypt" if you don't want the secure string to be decrypted
-    #DB_PASSWORD: ${ssm(noDecrypt):/db_password_ps}
-    DB_PASSWORD: ${ssm:/db_password_ps}
-    DB_USERNAME_SM: ${self:custom.DB_ADMIN_SM.username}
-    DB_PASSWORD_SM: ${self:custom.DB_ADMIN_SM.password}
-    #Loading variables from files
-    DB_USERNAME_FILE: ${file(./config/config.${opt:stage, 'dev'}.json):username}
-    DB_PASSWORD_FILE: ${file(./config/config.${opt:stage, 'dev'}.json):password}
-    #Serverless core variable
-    SLS_VARIABLE: ${sls:instanceId}
-    #AWS standard variable
-    AWS_VARIABLE: ${aws:accountId}
-    #S3:NameOfBucket/NameOfFile
-    S3_VARIABLE: ${s3:serverless-framework-deployments-us-east-1-1c8015fc-54f4/s3Variable.txt}
-    #Variable from another cloud formation
-    CF_SERVICE_ENDPOINT: ${cf:first-serverless-prod.ServiceEndpoint}
-    #Converting string value to bool
-    STR_TO_BOOL_VARIABLE: ${strToBool(${ssm:/ENABLE_DEBUG})}
+    # TEST_VAR: TEST
+    # #Combine var
+    # #self - yaml file
+    # #provider.stage - value we are refering to
+    # TEST_VAR_COMBINED: TEST-${self:provider.stage}
+    # #Fetching variables from parameter store
+    # DB_USERNAME: ${ssm:/db_username_ps}
+    # #Pass "noDecrypt" if you don't want the secure string to be decrypted
+    # #DB_PASSWORD: ${ssm(noDecrypt):/db_password_ps}
+    # DB_PASSWORD: ${ssm:/db_password_ps}
+    # DB_USERNAME_SM: ${self:custom.DB_ADMIN_SM.username}
+    # DB_PASSWORD_SM: ${self:custom.DB_ADMIN_SM.password}
+    # #Loading variables from files
+    # DB_USERNAME_FILE: ${file(./config/config.${opt:stage, 'dev'}.json):username}
+    # DB_PASSWORD_FILE: ${file(./config/config.${opt:stage, 'dev'}.json):password}
+    # #Serverless core variable
+    # SLS_VARIABLE: ${sls:instanceId}
+    # #AWS standard variable
+    # AWS_VARIABLE: ${aws:accountId}
+    # #S3:NameOfBucket/NameOfFile
+    # S3_VARIABLE: ${s3:serverless-framework-deployments-us-east-1-1c8015fc-54f4/s3Variable.txt}
+    # #Variable from another cloud formation
+    # CF_SERVICE_ENDPOINT: ${cf:first-serverless-prod.ServiceEndpoint}
+    # #Converting string value to bool
+    # STR_TO_BOOL_VARIABLE: ${strToBool(${ssm:/ENABLE_DEBUG})}
+    USERS_TABLE: ${self:custom.USERS_TABLE_NAME}
 
 plugins:
   - serverless-offline
@@ -45,17 +46,17 @@ plugins:
 custom:
   #Need to be defined here because it is stored as a json
   #Serverless framework is not capable of parsing json into env variable yet
-  DB_ADMIN_SM: ${ssm:/aws/reference/secretsmanager/db_admin_sm}
+  # DB_ADMIN_SM: ${ssm:/aws/reference/secretsmanager/db_admin_sm}
   USERS_TABLE_NAME: usersTable-${opt:stage, self:provider.stage}
 
 functions:
   user:
-    handler: functions/user/user.post
+    handler: functions/user/user.createUser
     description: 'Creates a new user'
-    environment:
-      TEST_VAR_FS: 'TEST_FS'
-      #Loaded from .env using serverless dotenv plugin
-      ENV_USING_PLUGIN: ${env:FROM_ENV}-${self:provider.name}
+    # environment:
+    # TEST_VAR_FS: 'TEST_FS'
+    # #Loaded from .env using serverless dotenv plugin
+    # ENV_USING_PLUGIN: ${env:FROM_ENV}-${self:provider.name}
     events:
       - http:
           path: user
