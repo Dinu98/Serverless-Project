@@ -24,6 +24,9 @@ provider:
     DB_PASSWORD: ${ssm:/db_password_ps}
     DB_USERNAME_SM: ${self:custom.DB_ADMIN_SM.username}
     DB_PASSWORD_SM: ${self:custom.DB_ADMIN_SM.password}
+    #Loading variables from files
+    DB_USERNAME_FILE: ${file(./config/config.${opt:stage, 'dev'}.json):username}
+    DB_PASSWORD_FILE: ${file(./config/config.${opt:stage, 'dev'}.json):password}
 
 plugins:
   - serverless-offline

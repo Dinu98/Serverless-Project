@@ -15,9 +15,10 @@ module.exports.post = async (event, context) => {
       TEST_VAR_COMBINED: `${process.env.TEST_VAR_COMBINED}`,
       DB_USERNAME: `${process.env.DB_USERNAME}`,
       DB_PASSWORD: `${process.env.DB_PASSWORD}`,
-      DM_ADMIN_SM: `${process.env.DM_ADMIN_SM}`,
-      DB_USERNAME_SM: `${process.env.DM_ADMIN_SM}`,
-      DB_PASSWORD_SM: `${process.env.DM_ADMIN_SM}`,
+      DB_USERNAME_SM: `${process.env.DB_USERNAME_SM}`,
+      DB_PASSWORD_SM: `${process.env.DB_PASSWORD_SM}`,
+      DB_USERNAME_FILE: `${process.env.DB_USERNAME_FILE}`,
+      DB_PASSWORD_FILE: `${process.env.DB_PASSWORD_FILE}`,
     })
   }
 
