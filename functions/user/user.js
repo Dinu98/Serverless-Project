@@ -10,7 +10,9 @@ module.exports.post = async (event, context) => {
         "Access-Control-Allow-Origin": '*'
     },
     "body": JSON.stringify({
-      message: 'Hello from post'
+      TEST_VAR: `${process.env.TEST_VAR}`,
+      TEST_VAR_FS: `${process.env.TEST_VAR_FS}`,
+      TEST_VAR_COMBINED: `${process.env.TEST_VAR_COMBINED}`,
     })
   }
 

@@ -5,10 +5,18 @@ frameworkVersion: '4'
 provider:
   name: aws
   runtime: nodejs20.x
-  stage: dev
+  #Setting default value to dev while also
+  #Permitting this value to be overrided
+  stage: ${opt:stage, 'dev'}
   region: us-west-2
   memorySize: 512
   timeout: 10
+  environment:
+    TEST_VAR: TEST
+    #Combine var
+    #self - yaml file
+    #provider.stage - value we are refering to
+    TEST_VAR_COMBINED: TEST-${self:provider.stage}
 
 plugins:
   - serverless-offline
@@ -17,6 +25,8 @@ functions:
   user:
     handler: functions/user/user.post
     description: 'Creates a new user'
+    environment:
+      TEST_VAR_FS: 'TEST_FS'
     events:
       - http:
           path: user
