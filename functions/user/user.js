@@ -22,6 +22,7 @@ module.exports.post = async (event, context) => {
       DB_USERNAME_FILE: `${process.env.DB_USERNAME_FILE}`,
       DB_PASSWORD_FILE: `${process.env.DB_PASSWORD_FILE}`,
       FROM_ENV: `${process.env.FROM_ENV}`,
+      ENV_USING_PLUGIN: `${process.env.ENV_USING_PLUGIN}`,
     })
   }
 

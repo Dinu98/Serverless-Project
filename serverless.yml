@@ -30,6 +30,7 @@ provider:
 
 plugins:
   - serverless-offline
+  - serverless-dotenv-plugin
 
 custom:
   #Need to be defined here because it is stored as a json
@@ -42,6 +43,7 @@ functions:
     description: 'Creates a new user'
     environment:
       TEST_VAR_FS: 'TEST_FS'
+      ENV_USING_PLUGIN: ${env:FROM_ENV}-${self:provider.name}
     events:
       - http:
           path: user
